@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menampilkan Data dengan AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <table id="driverTable" border="1px">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Driver ID</th>
+                <th>Given Name</th>
+                <th>Family Name</th>
+                <th>Nationality</th>
+                <th>Date of Birth</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "http://ergast.com/api/f1/drivers.json",
+                method: "GET",
+                success: function(data) {
+                    var drivers = data.MRData.DriverTable.Drivers;
+                    var tableBody = $("#driverTable tbody");
+
+                    $.each(drivers, function(index, driver) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(index + 1));
+                        row.append($("<td>").text(driver.driverId));
+                        row.append($("<td>").text(driver.givenName));
+                        row.append($("<td>").text(driver.familyName));
+                        row.append($("<td>").text(driver.nationality));
+                        row.append($("<td>").text(driver.dateOfBirth));
+
+                        tableBody.append(row);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
